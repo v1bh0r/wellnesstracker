@@ -1,0 +1,214 @@
+openapi: 3.0.0
+info:
+  title: Employee Wellness Tracker API
+  version: 1.0.0
+  description: API for managing health activities, wellness challenges, and reporting for an employee wellness tracker application.
+
+paths:
+  /users:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUser'
+      responses:
+        '201':
+          description: User created
+
+    get:
+      summary: Get user details
+      parameters:
+        - in: query
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /activities:
+    post:
+      summary: Log a new health activity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewActivity'
+      responses:
+        '201':
+          description: Activity logged
+
+    get:
+      summary: Get logged activities
+      parameters:
+        - in: query
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of activities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activity'
+
+  /challenges:
+    post:
+      summary: Create or join a wellness challenge
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewChallenge'
+      responses:
+        '201':
+          description: Challenge created or joined
+
+    get:
+      summary: List all challenges
+      responses:
+        '200':
+          description: List of challenges
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Challenge'
+
+  /reports:
+    post:
+      summary: Generate a new wellness report
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                departmentId:
+                  type: string
+                startDate:
+                  type: string
+                endDate:
+                  type: string
+                # Additional parameters for report generation if needed
+      responses:
+        '201':
+          description: Report generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+        '400':
+          description: Invalid request parameters
+
+components:
+  schemas:
+    NewUser:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        department:
+          type: string
+        # Additional user properties
+
+    User:
+      type: object
+      properties:
+        userId:
+          type: string
+        name:
+          type: string
+        # Additional user details
+
+    NewActivity:
+      type: object
+      properties:
+        userId:
+          type: string
+        date:
+          type: string
+        steps:
+          type: integer
+        waterIntake:
+          type: integer
+        sleepHours:
+          type: integer
+
+    Activity:
+      type: object
+      properties:
+        activityId:
+          type: string
+        userId:
+          type: string
+        # Other activity details
+
+    NewChallenge:
+      type: object
+      properties:
+        challengeName:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        # Other challenge properties
+
+    Challenge:
+      type: object
+      properties:
+        challengeId:
+          type: string
+        challengeName:
+          type: string
+        # Other challenge details
+    Report:
+      type: object
+      properties:
+        reportId:
+          type: string
+        departmentId:
+          type: string
+        data:
+          type: object
+          properties:
+            totalSteps:
+              type: integer
+            averageSleepHours:
+              type: integer
+            averageWaterIntake:
+              type: integer
+
+        # Additional schemas for teams, rewards, and device integrations can be added as needed
+
+security:
+  - api_key: [ ]
+
+tags:
+  - name: users
+    description: Operations related to user management
+  - name: activities
+    description: Operations related to activity logging
+  - name: challenges
+    description: Operations related to wellness challenges
+  - name: reports
+    description: Operations related to reporting and insights
