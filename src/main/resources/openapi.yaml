@@ -1,0 +1,247 @@
+openapi: 3.0.0
+info:
+  description: "API for managing health activities, wellness challenges, and reporting\
+    \ for an employee wellness tracker application."
+  title: Employee Wellness Tracker API
+  version: 1.0.0
+servers:
+- url: /
+security:
+- api_key: []
+tags:
+- description: Operations related to user management
+  name: users
+- description: Operations related to activity logging
+  name: activities
+- description: Operations related to wellness challenges
+  name: challenges
+- description: Operations related to reporting and insights
+  name: reports
+paths:
+  /users:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: User details
+      summary: Get user details
+      x-accepts: application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUser'
+        required: true
+      responses:
+        "201":
+          description: User created
+      summary: Register a new user
+      x-content-type: application/json
+      x-accepts: application/json
+  /activities:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Activity'
+                type: array
+          description: List of activities
+      summary: Get logged activities
+      x-accepts: application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewActivity'
+        required: true
+      responses:
+        "201":
+          description: Activity logged
+      summary: Log a new health activity
+      x-content-type: application/json
+      x-accepts: application/json
+  /challenges:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Challenge'
+                type: array
+          description: List of challenges
+      summary: List all challenges
+      x-accepts: application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewChallenge'
+        required: true
+      responses:
+        "201":
+          description: Challenge created or joined
+      summary: Create or join a wellness challenge
+      x-content-type: application/json
+      x-accepts: application/json
+  /reports:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_reports_post_request'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+          description: Report generated
+        "400":
+          description: Invalid request parameters
+      summary: Generate a new wellness report
+      x-content-type: application/json
+      x-accepts: application/json
+components:
+  schemas:
+    NewUser:
+      example:
+        name: name
+        department: department
+        email: email
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        department:
+          type: string
+      type: object
+    User:
+      example:
+        name: name
+        userId: userId
+      properties:
+        userId:
+          type: string
+        name:
+          type: string
+      type: object
+    NewActivity:
+      example:
+        date: date
+        sleepHours: 1
+        waterIntake: 6
+        userId: userId
+        steps: 0
+      properties:
+        userId:
+          type: string
+        date:
+          type: string
+        steps:
+          type: integer
+        waterIntake:
+          type: integer
+        sleepHours:
+          type: integer
+      type: object
+    Activity:
+      example:
+        activityId: activityId
+        userId: userId
+      properties:
+        activityId:
+          type: string
+        userId:
+          type: string
+      type: object
+    NewChallenge:
+      example:
+        endDate: endDate
+        challengeName: challengeName
+        startDate: startDate
+      properties:
+        challengeName:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+      type: object
+    Challenge:
+      example:
+        challengeId: challengeId
+        challengeName: challengeName
+      properties:
+        challengeId:
+          type: string
+        challengeName:
+          type: string
+      type: object
+    Report:
+      example:
+        reportId: reportId
+        data:
+          totalSteps: 0
+          averageWaterIntake: 1
+          averageSleepHours: 6
+        departmentId: departmentId
+      properties:
+        reportId:
+          type: string
+        departmentId:
+          type: string
+        data:
+          $ref: '#/components/schemas/Report_data'
+      type: object
+    _reports_post_request:
+      properties:
+        departmentId:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+      type: object
+    Report_data:
+      example:
+        totalSteps: 0
+        averageWaterIntake: 1
+        averageSleepHours: 6
+      properties:
+        totalSteps:
+          type: integer
+        averageSleepHours:
+          type: integer
+        averageWaterIntake:
+          type: integer
+      type: object
