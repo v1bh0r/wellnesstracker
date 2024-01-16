@@ -5,6 +5,7 @@ import com.trantorinc.wellnesstracker.model.User;
 
 
 import com.trantorinc.wellnesstracker.repository.UserRepository;
+import com.trantorinc.wellnesstracker.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,23 +38,19 @@ import javax.annotation.Generated;
 @RequestMapping("${openapi.employeeWellnessTracker.base-path:}")
 @RequiredArgsConstructor
 public class UsersApiController implements UsersApi {
-    private final UserRepository userRepository;
+    private final UserService userService;
     @Override
     public Mono<ResponseEntity<User>> usersGet(String userId, ServerWebExchange exchange) {
-        return userRepository.findByUserId(userId)
+        return userService.find(userId)
                 .map(user -> ResponseEntity.ok(user))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @Override
-    public Mono<ResponseEntity<Void>> usersPost(Mono<NewUser> newUser, ServerWebExchange exchange) {
-        return newUser.flatMap(providedUser -> {
-            var user = User.builder()
-                .userId(UUID.randomUUID())
-                .name(providedUser.getName())
-                .build();
-            return userRepository.save(user)
-                .map(createdUser -> ResponseEntity.status(HttpStatus.CREATED).build());
+    public Mono<ResponseEntity<User>> usersPost(Mono<NewUser> newUser, ServerWebExchange exchange) {
+        return newUser.flatMap(user -> {
+            return userService.createUser(user)
+                .map(createdUser -> ResponseEntity.status(HttpStatus.OK).body(createdUser));
         });
     }
 }

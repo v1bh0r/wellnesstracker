@@ -45,7 +45,11 @@ paths:
               $ref: '#/components/schemas/NewUser'
         required: true
       responses:
-        "201":
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
           description: User created
       summary: Register a new user
       x-content-type: application/json
@@ -103,10 +107,23 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/NewChallenge'
+            examples:
+              SUCCESS:
+                value:
+                  name: "Heidi"
+                  department: "Engineering"
+                  email: "heidi@trantorinc.com"
+              BAD_REQUEST:
+                value:
+                  name: null
+                  department: null
+                  designation: null
         required: true
       responses:
         "201":
           description: Challenge created or joined
+        "400":
+          description: Invalid request parameters
       summary: Create or join a wellness challenge
       x-content-type: application/json
       x-accepts: application/json
@@ -145,6 +162,10 @@ components:
         department:
           type: string
       type: object
+      required:
+        - name
+        - email
+        - department
     User:
       example:
         name: name
@@ -154,7 +175,16 @@ components:
           type: string
         name:
           type: string
+        email:
+          type: string
+        department:
+          type: string
       type: object
+      required:
+        - name
+        - email
+        - department
+        - userId
     NewActivity:
       example:
         date: date

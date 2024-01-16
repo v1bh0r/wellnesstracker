@@ -16,5 +16,6 @@ public class ContractTests extends SpecmaticJUnitSupport {
         System.setProperty("contractPaths", apiContract.getAbsolutePath());
         System.setProperty("host", "localhost");
         System.setProperty("port", "8080");
+        System.setProperty("SPECMATIC_GENERATIVE_TESTS", "true");
     }
 }

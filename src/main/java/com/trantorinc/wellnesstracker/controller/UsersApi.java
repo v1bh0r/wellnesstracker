@@ -86,7 +86,7 @@ public interface UsersApi {
         consumes = { "application/json" }
     )
     
-    default Mono<ResponseEntity<Void>> usersPost(
+    default Mono<ResponseEntity<User>> usersPost(
         @Parameter(name = "NewUser", description = "", required = true) @Valid @RequestBody Mono<NewUser> newUser,
         @Parameter(hidden = true) final ServerWebExchange exchange
     ) {
