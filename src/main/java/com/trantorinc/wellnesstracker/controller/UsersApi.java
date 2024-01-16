@@ -62,23 +62,10 @@ public interface UsersApi {
         produces = { "application/json" }
     )
     
-    default Mono<ResponseEntity<User>> usersGet(
+    Mono<ResponseEntity<User>> usersGet(
         @NotNull @Parameter(name = "userId", description = "", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "userId", required = true) String userId,
         @Parameter(hidden = true) final ServerWebExchange exchange
-    ) {
-        Mono<Void> result = Mono.empty();
-        exchange.getResponse().setStatusCode(HttpStatus.NOT_IMPLEMENTED);
-        for (MediaType mediaType : exchange.getRequest().getHeaders().getAccept()) {
-            if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                String exampleString = "{ \"name\" : \"name\", \"userId\" : \"userId\" }";
-                result = ApiUtil.getExampleResponse(exchange, MediaType.valueOf("application/json"), exampleString);
-                break;
-            }
-        }
-        return result.then(Mono.empty());
-
-    }
-
+    );
 
     /**
      * POST /users : Register a new user

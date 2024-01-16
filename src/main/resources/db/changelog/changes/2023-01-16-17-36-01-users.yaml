@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2023-01-16-17-36-01-users.yaml
+      author: v1bh0r
+      changes:
+        - createTable:
+            tableName: app_users
+            columns:
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: department
+                  type: varchar(255)
+                  constraints:
+                    nullable: true

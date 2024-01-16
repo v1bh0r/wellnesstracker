@@ -4,11 +4,16 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.data.relational.core.mapping.Table;
 
 
 import java.util.*;
@@ -19,13 +24,17 @@ import javax.annotation.Generated;
  */
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-01-15T17:46:27.736648+05:30[Asia/Kolkata]")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table("app_users")
 public class User {
 
-  private String userId;
+  private UUID userId;
 
   private String name;
 
-  public User userId(String userId) {
+  public User userId(UUID userId) {
     this.userId = userId;
     return this;
   }
@@ -38,10 +47,10 @@ public class User {
   @Schema(name = "userId", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("userId")
   public String getUserId() {
-    return userId;
+    return userId.toString();
   }
 
-  public void setUserId(String userId) {
+  public void setUserId(UUID userId) {
     this.userId = userId;
   }
 
