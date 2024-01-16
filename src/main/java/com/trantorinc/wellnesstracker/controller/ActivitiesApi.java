@@ -70,7 +70,7 @@ public interface ActivitiesApi {
         exchange.getResponse().setStatusCode(HttpStatus.NOT_IMPLEMENTED);
         for (MediaType mediaType : exchange.getRequest().getHeaders().getAccept()) {
             if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                String exampleString = "[ { \"activityId\" : \"activityId\", \"userId\" : \"userId\" }, { \"activityId\" : \"activityId\", \"userId\" : \"userId\" } ]";
+                String exampleString = "[ { \"activityId\" : \"activityId\", \"userId\" : \"userId\" }, { \"activityId\" : \"activityId2\", \"userId\" : \"userId2\" } ]";
                 result = ApiUtil.getExampleResponse(exchange, MediaType.valueOf("application/json"), exampleString);
                 break;
             }
