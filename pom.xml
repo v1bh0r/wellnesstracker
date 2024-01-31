@@ -29,6 +29,36 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>7.2.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
+              <generatorName>spring</generatorName>
+              <output>${project.build.directory}/generated-sources/openapi</output>
+
+              <configOptions>
+                <!--suppress UnresolvedMavenProperty -->
+                <additionalModelTypeAnnotations>@lombok.Builder @lombok.Data</additionalModelTypeAnnotations>
+                <reactive>true</reactive>
+                <springBoot>true</springBoot>
+                <reactiveMode>spring-webflux</reactiveMode>
+                <delegatePattern>true</delegatePattern>
+                <packageName>com.trantorinc.wellnesstracker</packageName>
+                <apiPackage>com.trantorinc.wellnesstracker.api</apiPackage>
+                <modelPackage>com.trantorinc.wellnesstracker.model</modelPackage>
+                <!-- Additional configuration options if needed -->
+              </configOptions>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
@@ -109,7 +139,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>in.specmatic</groupId>
@@ -126,7 +156,7 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
       <version>5.8.2</version>
-      <scope>test</scope>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 </project>

@@ -1,4 +1,4 @@
-package com.trantorinc.wellnesstracker.model;
+package com.trantorinc.wellnesstracker.domain;
 
 import java.net.URI;
 import java.util.Objects;
